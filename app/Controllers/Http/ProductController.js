@@ -3,6 +3,7 @@
 const Product = use('App/Models/Product')
 const Helpers = use('Helpers')
 const Joi = require('joi')
+const { v4: uuidv4 } = require('uuid')
 
 class ProductController {
   async index({ request, response }) {
@@ -25,32 +26,37 @@ class ProductController {
   }
 
   async show({ params, response }) {
-    const product = await Product.findOrFail(params.id)
+    const product = await Product.query()
+      .where('id', params.id)
+      .where('is_deleted', false)
+      .firstOrFail()
+
     return response.json(product)
   }
 
   async store({ request, response }) {
     const schema = Joi.object({
       name: Joi.string().max(255).required(),
-      sku: Joi.string().max(100).required(),
       description: Joi.string(),
       price: Joi.number().min(0).required(),
       quantity_in_stock: Joi.number().integer().min(0),
       category: Joi.string().max(255)
     })
 
+    let validatedData
+
     try {
-      const validatedData = await schema.validateAsync(request.all(), { abortEarly: false })
+      validatedData = await schema.validateAsync(request.all(), { abortEarly: false })
     } catch (error) {
       return response.status(400).json(error.details)
     }
 
     const productData = {
       name: validatedData.name,
-      sku: validatedData.sku,
+      sku: uuidv4(),
       description: validatedData.description,
       price: parseFloat(validatedData.price),
-      quantity_in_stock: validatedData.quantity_in_stock,
+      quantity_in_stock: validatedData.quantity_in_stock || 0,
       category: validatedData.category
     }
 
@@ -70,7 +76,7 @@ class ProductController {
         return response.status(400).json({ error: productImage.error().message })
       }
 
-      productData.image_url = `/uploads/${fileName}`
+      productData.image_file = `/uploads/${fileName}`
     }
 
     const product = await Product.create(productData)
@@ -79,27 +85,23 @@ class ProductController {
 
   async update({ params, request, response }) {
     const schema = Joi.object({
-      name: Joi.string().max(255).required(),
-      sku: Joi.string().max(100).required(),
+      name: Joi.string().max(255),
       description: Joi.string(),
-      price: Joi.number().min(0).required(),
+      price: Joi.number().min(0),
       quantity_in_stock: Joi.number().integer().min(0),
       category: Joi.string().max(255)
-    })
+    }).or('name', 'description', 'price', 'quantity_in_stock', 'category')
+
+    let validatedData
 
     try {
-      const validatedData = await schema.validateAsync(request.all(), { abortEarly: false })
+      validatedData = await schema.validateAsync(request.all(), { abortEarly: false })
     } catch (error) {
       return response.status(400).json(error.details)
     }
 
     const productData = {
-      name: validatedData.name,
-      sku: validatedData.sku,
-      description: validatedData.description,
-      price: parseFloat(validatedData.price),
-      quantity_in_stock: validatedData.quantity_in_stock,
-      category: validatedData.category
+      ...validatedData
     }
 
     const product = await Product.findOrFail(params.id)
@@ -120,7 +122,7 @@ class ProductController {
         return response.status(400).json({ error: productImage.error().message })
       }
 
-      productData.image_url = `/uploads/${fileName}`
+      productData.image_file = `/uploads/${fileName}`
     }
 
     product.merge(productData)

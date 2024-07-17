@@ -27,7 +27,8 @@
     "@adonisjs/shield": "^8.1.1",
     "@adonisjs/validator": "^13.0.2",
     "joi": "^17.13.3",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "uuid": "^10.0.0"
   },
   "autoload": {
     "App": "./app"

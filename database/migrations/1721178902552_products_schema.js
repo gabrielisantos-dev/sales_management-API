@@ -12,7 +12,7 @@ class ProductsSchema extends Schema {
       table.decimal('price', 12, 2).notNullable()
       table.integer('quantity_in_stock').unsigned().defaultTo(0)
       table.string('category', 255).nullable()
-      table.string('image_url', 255).nullable()
+      table.string('image_file', 255).nullable()
       table.boolean('is_deleted').defaultTo(false)
       table.timestamps()
     })
