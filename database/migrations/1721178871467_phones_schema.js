@@ -8,6 +8,7 @@ class PhonesSchema extends Schema {
       table.increments()
       table.integer('client_id').unsigned().references('id').inTable('clients').onDelete('CASCADE')
       table.string('number', 15).notNullable()
+      table.string('area_code', 2).notNullable()
       table.timestamps()
     })
   }

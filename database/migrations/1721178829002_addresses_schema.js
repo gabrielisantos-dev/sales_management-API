@@ -8,11 +8,10 @@ class AddressesSchema extends Schema {
       table.increments()
       table.integer('client_id').unsigned().references('id').inTable('clients').onDelete('CASCADE')
       table.string('street', 255).notNullable()
-      table.string('number', 50).notNullable()
-      table.string('neighborhood', 255).notNullable()
+      table.string('number', 20).notNullable()
       table.string('city', 255).notNullable()
       table.string('state', 2).notNullable()
-      table.string('zip_code', 8).notNullable()
+      table.string('zip_code', 9).notNullable()
       table.timestamps()
     })
   }

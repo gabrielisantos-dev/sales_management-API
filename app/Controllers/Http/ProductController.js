@@ -2,7 +2,7 @@
 
 const Product = use('App/Models/Product')
 const Helpers = use('Helpers')
-const { validate } = use('Validator')
+const Joi = require('joi')
 
 class ProductController {
   async index({ request, response }) {
@@ -30,23 +30,29 @@ class ProductController {
   }
 
   async store({ request, response }) {
-    const rules = {
-      name: 'required|string|max:255',
-      sku: 'required|string|max:100|unique:products,sku',
-      description: 'string',
-      price: 'required|number|min:0',
-      quantity_in_stock: 'integer|min:0',
-      category: 'string|max:255'
+    const schema = Joi.object({
+      name: Joi.string().max(255).required(),
+      sku: Joi.string().max(100).required(),
+      description: Joi.string(),
+      price: Joi.number().min(0).required(),
+      quantity_in_stock: Joi.number().integer().min(0),
+      category: Joi.string().max(255)
+    })
+
+    try {
+      const validatedData = await schema.validateAsync(request.all(), { abortEarly: false })
+    } catch (error) {
+      return response.status(400).json(error.details)
     }
 
-    const validation = await validate(request.all(), rules)
-
-    if (validation.fails()) {
-      return response.status(400).json(validation.messages())
+    const productData = {
+      name: validatedData.name,
+      sku: validatedData.sku,
+      description: validatedData.description,
+      price: parseFloat(validatedData.price),
+      quantity_in_stock: validatedData.quantity_in_stock,
+      category: validatedData.category
     }
-
-    const productData = request.only(['name', 'sku', 'description', 'price', 'quantity_in_stock', 'category'])
-    productData.price = parseFloat(productData.price)
 
     const productImage = request.file('image', {
       types: ['image'],
@@ -72,23 +78,29 @@ class ProductController {
   }
 
   async update({ params, request, response }) {
-    const rules = {
-      name: 'required|string|max:255',
-      sku: `required|string|max:100|unique:products,sku,id,${params.id}`,
-      description: 'string',
-      price: 'required|number|min:0',
-      quantity_in_stock: 'integer|min:0',
-      category: 'string|max:255'
+    const schema = Joi.object({
+      name: Joi.string().max(255).required(),
+      sku: Joi.string().max(100).required(),
+      description: Joi.string(),
+      price: Joi.number().min(0).required(),
+      quantity_in_stock: Joi.number().integer().min(0),
+      category: Joi.string().max(255)
+    })
+
+    try {
+      const validatedData = await schema.validateAsync(request.all(), { abortEarly: false })
+    } catch (error) {
+      return response.status(400).json(error.details)
     }
 
-    const validation = await validate(request.all(), rules)
-
-    if (validation.fails()) {
-      return response.status(400).json(validation.messages())
+    const productData = {
+      name: validatedData.name,
+      sku: validatedData.sku,
+      description: validatedData.description,
+      price: parseFloat(validatedData.price),
+      quantity_in_stock: validatedData.quantity_in_stock,
+      category: validatedData.category
     }
-
-    const productData = request.only(['name', 'sku', 'description', 'price', 'quantity_in_stock', 'category'])
-    productData.price = parseFloat(productData.price)
 
     const product = await Product.findOrFail(params.id)
 

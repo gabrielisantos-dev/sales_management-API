@@ -7,7 +7,7 @@ class ClientsSchema extends Schema {
     this.create('clients', (table) => {
       table.increments()
       table.string('name', 255).notNullable()
-      table.string('cpf', 11).notNullable().unique()
+      table.string('cpf', 14).notNullable().unique()
       table.timestamps()
     })
   }
