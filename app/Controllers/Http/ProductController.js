@@ -134,7 +134,7 @@ class ProductController {
     const product = await Product.findOrFail(params.id)
     product.is_deleted = true
     await product.save()
-    return response.json({ message: 'Produto excluído' })
+    return response.json({ message: 'Produto marcado como excluído' })
   }
 }
 
