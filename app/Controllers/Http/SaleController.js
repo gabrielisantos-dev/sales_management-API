@@ -12,8 +12,10 @@ class SalesController {
       quantity: Joi.number().integer().min(1).required(),
     })
 
+    let validatedData;
+
     try {
-      const validatedData = await schema.validateAsync(request.all(), { abortEarly: false })
+      validatedData = await schema.validateAsync(request.all(), { abortEarly: false })
     } catch (error) {
       return response.status(400).json(error.details)
     }
