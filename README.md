@@ -304,8 +304,8 @@ Este projeto é um sistema de gestão desenvolvido utilizando o framework Adonis
         "price": 100.00,
         "quantity_in_stock": 50,
         "category": null,
-	      "image_file": null,
-	      "is_deleted": 0,
+	    "image_file": null,
+	    "is_deleted": 0,
         "created_at": "2024-07-17 18:00:00",
         "updated_at": "2024-07-17 18:00:00"
       }
@@ -360,9 +360,9 @@ Este projeto é um sistema de gestão desenvolvido utilizando o framework Adonis
         "description": "Descrição atualizada do produto",
         "price": 59.99,
         "quantity_in_stock": 0,
-	      "category": null,
-	      "image_file": null,
-	      "is_deleted": 0,
+	    "category": null,
+	    "image_file": null,
+	    "is_deleted": 0,
         "created_at": "2024-07-17 19:10:00",
         "updated_at": "2024-07-17 19:15:00"
       }
