@@ -409,6 +409,12 @@ Este projeto é um sistema de gestão desenvolvido utilizando o framework Adonis
     }
     ```
 
-## Conclusão
 
-Este projeto foi desenvolvido com foco na clareza, organização do código e boas práticas de desenvolvimento. Fico à disposição para feedbacks e sugestões, visando sempre a melhoria contínua.
+## Estrutura do Repositório
+
+Inicialmente, a branch principal estava configurada como `development`. Após revisão, criei a branch `main` e a defini como principal para seguir as práticas recomendadas de versionamento.
+
+**Nota:** A branch `development` foi removida após consolidar todas as alterações na `main`.
+
+
+Fico à disposição para feedbacks e sugestões, visando sempre a melhoria contínua.
