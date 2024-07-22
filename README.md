@@ -24,8 +24,8 @@ Este projeto é um sistema de gestão desenvolvido utilizando o framework Adonis
 
 1. Clone o repositório:
     ```sh
-    git clone git@github.com:gabrielisantos-dev/Sales_Management_Api.git
-    cd Sales_Management_Api
+    git clone git@github.com:gabrielisantos-dev/sales_management-API.git
+    cd sales_management-API
     ```
 
 2. Instale as dependências:
